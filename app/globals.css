@@ -1,26 +1,178 @@
-@import "tailwindcss";
+/* app/globals.css */
 
+/* Tailwind v4 + shadcn base */
+@import "tailwindcss";
+/* If this errors, either install it: `npm i -D tw-animate-css` or just comment it out */
+@import "tw-animate-css";
+
+/**
+ * Make `dark:` utilities use the `.dark` class on <html> or any ancestor.
+ * This is what your JS toggle is adding/removing.
+ */
+@custom-variant dark (&:is(.dark *));
+
+/* shadcn theme tokens (neutral / “new-york” style) */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* light mode – warm off-white + charcoal + gold */
+  --background: #fdfbf7;
+  --foreground: #252321;
+  /* dark charcoal (like logo text) */
+
+  --card: #ffffff;
+  --card-foreground: #252321;
+
+  --popover: #ffffff;
+  --popover-foreground: #252321;
+
+  --primary: #cfbc7f;
+  /* logo gold */
+  --primary-foreground: #282828;
+  /* charcoal text on gold */
+
+  /* soft beige neutrals for chips / subtle sections */
+  --secondary: #f3ebe0;
+  --secondary-foreground: #252321;
+
+  --muted: #f3ebe0;
+  --muted-foreground: #6b6156;
+
+  --accent: #f3ebe0;
+  --accent-foreground: #252321;
+
+  /* borders / inputs with a soft warm beige */
+  --border: #e0d4c2;
+  --input: #e0d4c2;
+  --ring: #c8a96a;
+  /* gold focus ring */
+
+  /* charts + sidebar can stay roughly neutral; tweak later if needed */
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+
+  --radius: 0.625rem;
+
+  --sidebar: #fdfbf7;
+  --sidebar-foreground: #252321;
+  --sidebar-primary: #c8a96a;
+  --sidebar-primary-foreground: #252321;
+  --sidebar-accent: #f3ebe0;
+  --sidebar-accent-foreground: #252321;
+  --sidebar-border: #e0d4c2;
+  --sidebar-ring: #c8a96a;
 }
 
+.dark {
+  /* dark mode – near-black + gold accent, warm text */
+  --background: #111111;
+  --foreground: #f7f3ea;
+
+  --card: #181818;
+  --card-foreground: #f7f3ea;
+
+  --popover: #181818;
+  --popover-foreground: #f7f3ea;
+
+  /* keep the same gold in dark mode */
+  --primary: #cfbc7f;
+  --primary-foreground: #111111;
+
+  --secondary: #222222;
+  --secondary-foreground: #f7f3ea;
+
+  --muted: #222222;
+  --muted-foreground: #b1a693;
+
+  --accent: #222222;
+  --accent-foreground: #f7f3ea;
+
+  --border: #333333;
+  --input: #333333;
+  --ring: #c8a96a;
+
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+
+  --sidebar: #181818;
+  --sidebar-foreground: #f7f3ea;
+  --sidebar-primary: #c8a96a;
+  --sidebar-primary-foreground: #111111;
+  --sidebar-accent: #222222;
+  --sidebar-accent-foreground: #f7f3ea;
+  --sidebar-border: #333333;
+  --sidebar-ring: #c8a96a;
+}
+
+/* Map those tokens into Tailwind’s design system */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Make borders + body use the theme tokens (this is what shadcn expects) */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Your custom global styles */
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Smooth reveal animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: none;
 }
